@@ -108,6 +108,10 @@ export async function getDashboardData() {
       action: `completed ${w.exercises[0]?.exerciseName || 'Workout'}`,
       time: new Date(w.date).toLocaleTimeString(),
       kudos: 0
+    }))
+  }
+}
+
 export async function getLeaderboardData() {
   const users = await db.user.findMany({
     include: {
