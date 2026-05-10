@@ -97,8 +97,9 @@ export function QuickLog() {
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">SETS</label>
+            <label htmlFor="sets" className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">SETS</label>
             <input 
+              id="sets"
               type="number" 
               value={sets}
               onChange={(e) => setSets(Number(e.target.value))}
@@ -106,8 +107,9 @@ export function QuickLog() {
             />
           </div>
           <div>
-            <label className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">REPS</label>
+            <label htmlFor="reps" className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">REPS</label>
             <input 
+              id="reps"
               type="number" 
               value={reps}
               onChange={(e) => setReps(Number(e.target.value))}
@@ -115,8 +117,9 @@ export function QuickLog() {
             />
           </div>
           <div>
-            <label className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">LOAD (KG)</label>
+            <label htmlFor="weight" className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">LOAD (KG)</label>
             <input 
+              id="weight"
               type="number" 
               value={weight}
               onChange={(e) => setWeight(Number(e.target.value))}
