@@ -1,9 +1,13 @@
 import { ExerciseDatabase, SequenceDesigner, VolumePredictor } from '@/components/Routines'
-import { getExercises } from '@/lib/actions'
+import { getExercises, getRoutines } from '@/lib/actions'
 import { exercises as mockExercises } from '@/data/mockData'
 
 export default async function RoutinesPage() {
-  const dbExercises = await getExercises()
+  const [dbExercises, savedRoutines] = await Promise.all([
+    getExercises(),
+    getRoutines()
+  ])
+
   const displayExercises = dbExercises.length > 0 ? dbExercises : mockExercises
 
   return (
@@ -13,16 +17,10 @@ export default async function RoutinesPage() {
         <div className="lg:col-span-3 h-full overflow-hidden">
           <ExerciseDatabase items={displayExercises} />
         </div>
-...
+
         {/* Main Sequence Designer */}
         <div className="lg:col-span-6 h-full overflow-y-auto pr-2 custom-scrollbar">
-          <div className="flex items-center justify-between mb-8 sticky top-0 bg-black/80 backdrop-blur-sm z-10 py-2">
-            <div>
-              <h2 className="font-orbitron text-xl text-white tracking-tighter uppercase">Tactical_Sequence_Designer</h2>
-              <p className="text-[10px] font-jetbrains text-cyber-cyan tracking-[0.3em]">ID: PROTOCOL_ALPHA_01</p>
-            </div>
-          </div>
-          <SequenceDesigner />
+          <SequenceDesigner savedRoutines={savedRoutines} />
         </div>
 
         {/* Volume Predictor Sidebar */}

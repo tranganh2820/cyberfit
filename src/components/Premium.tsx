@@ -4,16 +4,31 @@ import { ShieldCheck, Zap, Globe, Cpu, CreditCard, CheckCircle2 } from 'lucide-r
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import { useState } from 'react'
+import { updateRole } from '@/lib/actions'
+
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function TierHub() {
+  const [isPending, setIsPending] = useState<string | null>(null)
+
   const tiers = [
-    { name: 'BASIC', price: '$0', features: ['Core Tracking', 'Social Feed', 'Standard Database'] },
-    { name: 'ELITE', price: '$19', features: ['Advanced Analytics', 'Routine Builder', 'Regional Rankings', 'AI Coaching'] },
-    { name: 'OVERRIDE', price: '$49', features: ['Biometric HUD', 'Verified Status', '1RM Predictions', 'Personal Trainer Sync'], premium: true },
+    { id: 'BASIC', name: 'BASIC', price: '$0', features: ['Core Tracking', 'Social Feed', 'Standard Database'] },
+    { id: 'ELITE', name: 'ELITE', price: '$19', features: ['Advanced Analytics', 'Routine Builder', 'Regional Rankings', 'AI Coaching'] },
+    { id: 'OVERRIDE', name: 'OVERRIDE', price: '$49', features: ['Biometric HUD', 'Verified Status', '1RM Predictions', 'Personal Trainer Sync'], premium: true },
   ]
+
+  const handleUpgrade = async (role: any) => {
+    setIsPending(role)
+    try {
+      await updateRole(role)
+      alert(`STATUS_UPGRADED_TO_${role}`)
+    } finally {
+      setIsPending(null)
+    }
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -50,13 +65,18 @@ export function TierHub() {
             ))}
           </ul>
 
-          <button className={cn(
-            "mt-10 w-full py-3 font-orbitron text-xs tracking-widest uppercase transition-all",
-            tier.premium 
-              ? "bg-cyber-cyan text-black font-black" 
-              : "border border-white/20 text-white hover:bg-white hover:text-black"
-          )}>
-            Select_Tier
+          <button 
+            onClick={() => handleUpgrade(tier.id)}
+            disabled={isPending !== null}
+            className={cn(
+              "mt-10 w-full py-3 font-orbitron text-xs tracking-widest uppercase transition-all",
+              tier.premium 
+                ? "bg-cyber-cyan text-black font-black" 
+                : "border border-white/20 text-white hover:bg-white hover:text-black",
+              isPending === tier.id && "animate-pulse opacity-50"
+            )}
+          >
+            {isPending === tier.id ? 'UPGRADING...' : 'Select_Tier'}
           </button>
         </div>
       ))}

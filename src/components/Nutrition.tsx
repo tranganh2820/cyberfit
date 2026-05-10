@@ -4,6 +4,7 @@ import { Search, Apple, Droplets, Trash2, Zap } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { useState, useEffect } from 'react'
+import { logNutrition } from '@/lib/actions'
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -98,6 +99,23 @@ export function MacroLog({ items }: { items: any[] }) {
 }
 
 export function FuelScanner() {
+  const [isPending, setIsPending] = useState(false)
+
+  const handleLog = async (item: any) => {
+    setIsPending(true)
+    try {
+      await logNutrition({
+        protein: item.p,
+        carbs: item.c,
+        fats: item.f,
+        calories: item.kcal
+      })
+      alert('FUEL_COMMITTED_SUCCESSFULLY')
+    } finally {
+      setIsPending(false)
+    }
+  }
+
   return (
     <div className="border border-white/10 bg-black/40 p-6 glassmorphism h-full">
       <div className="flex items-center gap-2 mb-6">
@@ -120,8 +138,15 @@ export function FuelScanner() {
           { name: 'WHEY_ISO', kcal: 120, p: 25, c: 2, f: 1 },
           { name: 'EGGS_AV_06', kcal: 70, p: 6, c: 0.5, f: 5 },
         ].map((res) => (
-          <div key={res.name} className="border border-white/5 p-3 hover:border-cyber-cyan/30 transition-colors cursor-pointer group">
-            <div className="text-xs text-white font-bold mb-2 uppercase">{res.name}</div>
+          <div 
+            key={res.name} 
+            onClick={() => handleLog(res)}
+            className="border border-white/5 p-3 hover:border-cyber-cyan/30 transition-colors cursor-pointer group"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <div className="text-xs text-white font-bold uppercase">{res.name}</div>
+              {isPending && <div className="animate-spin h-2 w-2 bg-cyber-cyan" />}
+            </div>
             <div className="flex gap-4 text-[10px] font-jetbrains text-gray-500 group-hover:text-cyber-cyan transition-colors">
               <span>P:{res.p}</span>
               <span>C:{res.c}</span>

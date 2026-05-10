@@ -4,40 +4,6 @@ import { db } from '@/lib/db'
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { revalidatePath } from 'next/cache'
 
-export async function logWorkout(formData: {
-  exerciseName: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}) {
-  const user = await currentUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // Self-healing: Ensure user exists in DB
-  await db.user.upsert({
-    where: { id: user.id },
-    update: { email: user.emailAddresses[0].emailAddress },
-    create: { id: user.id, email: user.emailAddresses[0].emailAddress }
-  })
-
-  await db.workoutSession.create({
-    data: {
-      userId: user.id,
-      exercises: {
-        create: {
-          exerciseName: formData.exerciseName,
-          category: 'CORE',
-          sets: formData.sets,
-          reps: formData.reps,
-          weight: formData.weight,
-        }
-      }
-    }
-  })
-
-  revalidatePath('/')
-}
-
 export async function logNutrition(formData: {
   protein: number;
   carbs: number;
@@ -180,6 +146,117 @@ export async function getNutritionData() {
   })
 
   return logs
+}
+
+export async function logWorkoutSession(exercises: {
+  exerciseName: string;
+  sets: number;
+  reps: number;
+  weight: number;
+  category?: string;
+}[]) {
+  const userRecord = await currentUser()
+  if (!userRecord) throw new Error('Unauthorized')
+  const userId = userRecord.id
+
+  // Self-healing: Ensure user exists in DB
+  await db.user.upsert({
+    where: { id: userId },
+    update: { email: userRecord.emailAddresses[0].emailAddress },
+    create: { id: userId, email: userRecord.emailAddresses[0].emailAddress }
+  })
+
+  const totalVolume = exercises.reduce((acc, ex) => acc + (ex.weight * ex.reps * ex.sets), 0)
+
+  await db.workoutSession.create({
+    data: {
+      userId,
+      totalVolume,
+      exercises: {
+        create: exercises.map(ex => ({
+          exerciseName: ex.exerciseName,
+          category: ex.category || 'CORE',
+          sets: ex.sets,
+          reps: ex.reps,
+          weight: ex.weight,
+        }))
+      }
+    }
+  })
+
+  revalidatePath('/')
+  revalidatePath('/leaderboards')
+}
+
+export async function saveRoutine(name: string, exercises: {
+  exerciseName: string;
+  sets: number;
+  reps: number;
+  weight: number;
+  category?: string;
+}[]) {
+  const userRecord = await currentUser()
+  if (!userRecord) throw new Error('Unauthorized')
+  const userId = userRecord.id
+
+  await db.routine.create({
+    data: {
+      userId,
+      name,
+      exercises: {
+        create: exercises.map(ex => ({
+          exerciseName: ex.exerciseName,
+          category: ex.category || 'CORE',
+          sets: ex.sets,
+          reps: ex.reps,
+          weight: ex.weight,
+        }))
+      }
+    }
+  })
+
+  revalidatePath('/routines')
+}
+
+export async function getRoutines() {
+  const userRecord = await currentUser()
+  if (!userRecord) return []
+  
+  return db.routine.findMany({
+    where: { userId: userRecord.id },
+    include: { exercises: true },
+    orderBy: { createdAt: 'desc' }
+  })
+}
+
+export async function deleteRoutine(id: string) {
+  const userRecord = await currentUser()
+  if (!userRecord) throw new Error('Unauthorized')
+
+  await db.routine.delete({
+    where: { id, userId: userRecord.id }
+  })
+
+  revalidatePath('/routines')
+}
+
+export async function updateRole(role: 'BASIC' | 'ELITE' | 'OVERRIDE') {
+  const userRecord = await currentUser()
+  if (!userRecord) throw new Error('Unauthorized')
+  const userId = userRecord.id
+
+  await db.user.upsert({
+    where: { id: userId },
+    update: { role },
+    create: { 
+      id: userId, 
+      email: userRecord.emailAddresses[0].emailAddress,
+      role 
+    }
+  })
+
+  revalidatePath('/premium')
+  revalidatePath('/')
 }
 
 export async function getExercises() {

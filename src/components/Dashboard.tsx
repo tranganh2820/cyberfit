@@ -4,7 +4,7 @@ import { Zap, Heart, Flame, Terminal, Plus, ThumbsUp } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { useState, useEffect } from 'react'
-import { logWorkout } from '@/lib/actions'
+import { logWorkoutSession } from '@/lib/actions'
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -64,11 +64,19 @@ export function QuickLog() {
     if (!exercise || sets <= 0) return
     setIsPending(true)
     try {
-      await logWorkout({ exerciseName: exercise, sets, reps, weight })
+      await logWorkoutSession([{ 
+        exerciseName: exercise, 
+        sets, 
+        reps, 
+        weight,
+        category: 'CORE'
+      }])
       setExercise('')
       setSets(0)
       setReps(0)
       setWeight(0)
+    } catch (e) {
+      alert('COMMIT_FAILURE')
     } finally {
       setIsPending(false)
     }

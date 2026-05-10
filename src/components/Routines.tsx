@@ -4,6 +4,9 @@ import { Search, Database, BarChart3, ChevronRight, Play, Trash2 } from 'lucide-
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import { useState } from 'react'
+import { logWorkoutSession } from '@/lib/actions'
+
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -48,51 +51,146 @@ export function ExerciseDatabase({ items }: { items: any[] }) {
   )
 }
 
-export function SequenceDesigner() {
-  const sequence = [
-    { id: 1, name: 'NEURAL-SQUAT', sets: 4, reps: 10, load: 140, rest: '90s' },
-    { id: 2, name: 'PLASMA-PRESS', sets: 3, reps: 12, load: 100, rest: '60s' },
-  ]
+export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
+  const [activeSequence, setActiveSequence] = useState<any[]>([])
+  const [routineName, setName] = useState('NEW_PROTOCOL')
+  const [isPending, setIsPending] = useState(false)
+
+  const handleStartRoutine = (routine: any) => {
+    setActiveSequence(routine.exercises.map((ex: any) => ({
+      exerciseName: ex.exerciseName,
+      sets: ex.sets,
+      reps: ex.reps,
+      weight: ex.weight
+    })))
+    setName(routine.name)
+  }
+
+  const handleAddModule = () => {
+    setActiveSequence([...activeSequence, { 
+      exerciseName: 'NEURAL-STIM', 
+      sets: 3, 
+      reps: 10, 
+      weight: 0 
+    }])
+  }
+
+  const handleUpdate = (index: number, field: string, value: any) => {
+    const updated = [...activeSequence]
+    updated[index] = { ...updated[index], [field]: value }
+    setActiveSequence(updated)
+  }
+
+  const handleCommit = async () => {
+    if (activeSequence.length === 0) return
+    setIsPending(true)
+    try {
+      await logWorkoutSession(activeSequence)
+      setActiveSequence([])
+      setName('NEW_PROTOCOL')
+      alert('PROTOCOL_COMMITTED_SUCCESSFULLY')
+    } catch (e) {
+      alert('SYNC_FAILURE: ' + (e as Error).message)
+    } finally {
+      setIsPending(false)
+    }
+  }
 
   return (
-    <div className="space-y-4">
-      {sequence.map((step, i) => (
-        <div key={step.id} className="border border-white/10 bg-white/5 p-6 glassmorphism relative group">
-          <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-cyber-charcoal border border-white/10 flex items-center justify-center font-jetbrains text-[10px] text-cyber-cyan">
-            {i + 1}
-          </div>
-          
-          <div className="flex justify-between items-start mb-6">
-            <h3 className="font-orbitron text-sm text-white tracking-widest ml-4">{step.name}</h3>
-            <button className="text-gray-600 hover:text-red-500 transition-colors">
-              <Trash2 size={16} />
+    <div className="space-y-8">
+      {/* Saved Routines Selection */}
+      {savedRoutines.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {savedRoutines.map(r => (
+            <button 
+              key={r.id}
+              onClick={() => handleStartRoutine(r)}
+              className="border border-white/10 bg-white/5 p-4 text-left hover:border-cyber-cyan transition-colors group"
+            >
+              <div className="text-[10px] font-jetbrains text-gray-500 mb-1">SAVED_PROTOCOL</div>
+              <div className="font-orbitron text-sm text-white">{r.name}</div>
+              <div className="text-[9px] font-jetbrains text-cyber-cyan mt-2 uppercase">{r.exercises.length} MODULES</div>
             </button>
-          </div>
-
-          <div className="grid grid-cols-4 gap-6 ml-4">
-            <div>
-              <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_SETS</label>
-              <input type="number" defaultValue={step.sets} className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
-            </div>
-            <div>
-              <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_REPS</label>
-              <input type="number" defaultValue={step.reps} className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
-            </div>
-            <div>
-              <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_LOAD_KG</label>
-              <input type="number" defaultValue={step.load} className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
-            </div>
-            <div>
-              <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_REST</label>
-              <input type="text" defaultValue={step.rest} className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
+      )}
 
-      <button className="w-full border-2 border-dashed border-white/5 py-8 text-gray-600 font-jetbrains text-[10px] tracking-[0.4em] uppercase hover:border-cyber-cyan/30 hover:text-cyber-cyan transition-all">
-        + DROP_NEW_EXERCISE_MODULE
-      </button>
+      <div className="flex items-center justify-between mb-8 sticky top-0 bg-black/80 backdrop-blur-sm z-10 py-2">
+        <div>
+          <h2 className="font-orbitron text-xl text-white tracking-tighter uppercase">Tactical_Sequence_Designer</h2>
+          <p className="text-[10px] font-jetbrains text-cyber-cyan tracking-[0.3em]">ID: {routineName}</p>
+        </div>
+        {activeSequence.length > 0 && (
+          <button 
+            onClick={handleCommit}
+            disabled={isPending}
+            className="bg-cyber-cyan text-black font-orbitron font-black text-[10px] px-6 py-2 tracking-widest hover:bg-white transition-all disabled:opacity-50"
+          >
+            {isPending ? 'COMMITTING...' : 'EXECUTE_SEQUENCE'}
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        {activeSequence.map((step, i) => (
+          <div key={i} className="border border-white/10 bg-white/5 p-6 glassmorphism relative group">
+            <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-cyber-charcoal border border-white/10 flex items-center justify-center font-jetbrains text-[10px] text-cyber-cyan">
+              {i + 1}
+            </div>
+            
+            <div className="flex justify-between items-start mb-6">
+              <input 
+                value={step.exerciseName}
+                onChange={(e) => handleUpdate(i, 'exerciseName', e.target.value)}
+                className="font-orbitron text-sm text-white tracking-widest ml-4 bg-transparent border-none focus:outline-none focus:ring-0 w-1/2"
+              />
+              <button 
+                onClick={() => setActiveSequence(activeSequence.filter((_, idx) => idx !== i))}
+                className="text-gray-600 hover:text-red-500 transition-colors"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 ml-4">
+              <div>
+                <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_SETS</label>
+                <input 
+                  type="number" 
+                  value={step.sets} 
+                  onChange={(e) => handleUpdate(i, 'sets', Number(e.target.value))}
+                  className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" 
+                />
+              </div>
+              <div>
+                <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_REPS</label>
+                <input 
+                  type="number" 
+                  value={step.reps} 
+                  onChange={(e) => handleUpdate(i, 'reps', Number(e.target.value))}
+                  className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" 
+                />
+              </div>
+              <div>
+                <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_LOAD_KG</label>
+                <input 
+                  type="number" 
+                  value={step.weight} 
+                  onChange={(e) => handleUpdate(i, 'weight', Number(e.target.value))}
+                  className="w-full bg-transparent border-b border-white/10 py-1 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" 
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <button 
+          onClick={handleAddModule}
+          className="w-full border-2 border-dashed border-white/5 py-8 text-gray-600 font-jetbrains text-[10px] tracking-[0.4em] uppercase hover:border-cyber-cyan/30 hover:text-cyber-cyan transition-all"
+        >
+          + DROP_NEW_EXERCISE_MODULE
+        </button>
+      </div>
     </div>
   )
 }

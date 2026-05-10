@@ -14,6 +14,31 @@ model User {
   updatedAt     DateTime         @updatedAt
   nutritionLogs NutritionLog[]
   workouts      WorkoutSession[]
+  routines      Routine[]
+}
+
+model Routine {
+  id        String            @id @default(cuid())
+  userId    String
+  name      String
+  exercises RoutineExercise[]
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+
+  @@index([userId])
+}
+
+model RoutineExercise {
+  id           String  @id @default(cuid())
+  routineId    String
+  exerciseName String
+  category     String
+  sets         Int
+  reps         Int
+  weight       Float
+  routine      Routine @relation(fields: [routineId], references: [id], onDelete: Cascade)
+
+  @@index([routineId])
 }
 
 model WorkoutSession {
