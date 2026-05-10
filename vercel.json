@@ -1,6 +1,0 @@
-{
-  "framework": "nextjs",
-  "buildCommand": "cd cyberfit && npm run build",
-  "installCommand": "cd cyberfit && npm install",
-  "outputDirectory": "cyberfit/.next"
-}
