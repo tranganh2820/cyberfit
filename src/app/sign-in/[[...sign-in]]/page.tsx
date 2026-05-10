@@ -9,30 +9,20 @@ export default function Page() {
            style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
       </div>
 
-      <div className="z-10 flex flex-col items-center gap-8">
-        <div className="flex items-center gap-4 mb-4">
-          <Activity className="text-cyber-cyan w-10 h-10 animate-pulse" />
-          <h1 className="text-3xl font-bold font-orbitron tracking-tighter text-white uppercase">
-            CyberFit // Auth_Protocol
+      <div className="z-10 flex flex-col items-center gap-8 max-w-full">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <Activity className="text-cyber-cyan w-12 h-12 animate-pulse" />
+          <h1 className="text-4xl font-bold font-orbitron tracking-tighter text-white uppercase">
+            CyberFit // <span className="text-cyber-cyan">Auth_Link</span>
           </h1>
+          <p className="font-jetbrains text-[10px] text-gray-500 uppercase tracking-[0.4em]">Establishing_Neural_Connection</p>
         </div>
 
-        <SignIn 
-          appearance={{
-            elements: {
-              footerActionText: "text-gray-500",
-              footerActionLink: "text-cyber-cyan hover:text-white transition-colors",
-              formButtonPrimary: "bg-cyber-cyan text-black hover:bg-white transition-all uppercase tracking-widest font-black rounded-none",
-              formFieldInput: "bg-black border-white/20 text-white rounded-none focus:border-cyber-cyan",
-              headerTitle: "text-white font-orbitron uppercase tracking-widest",
-              headerSubtitle: "text-gray-500 font-jetbrains",
-            }
-          }}
-        />
+        <SignIn />
       </div>
 
-      <div className="mt-8 text-gray-700 font-jetbrains text-[10px] tracking-[0.2em] uppercase z-10">
-        Secure_Gateway_Active // Operative_Access_Only
+      <div className="mt-12 text-gray-700 font-jetbrains text-[8px] tracking-[0.3em] uppercase z-10">
+        System_Gateway: [STABLE] // Encryption: [AES-256]
       </div>
     </div>
   );
