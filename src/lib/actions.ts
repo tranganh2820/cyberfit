@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { auth } from '@clerk/nextjs/server'
+import { auth, currentUser } from '@clerk/nextjs/server'
 import { revalidatePath } from 'next/cache'
 
 export async function logWorkout(formData: {
@@ -10,16 +10,23 @@ export async function logWorkout(formData: {
   reps: number;
   weight: number;
 }) {
-  const { userId } = await auth()
-  if (!userId) throw new Error('Unauthorized')
+  const user = await currentUser()
+  if (!user) throw new Error('Unauthorized')
+
+  // Self-healing: Ensure user exists in DB
+  await db.user.upsert({
+    where: { id: user.id },
+    update: { email: user.emailAddresses[0].emailAddress },
+    create: { id: user.id, email: user.emailAddresses[0].emailAddress }
+  })
 
   await db.workoutSession.create({
     data: {
-      userId,
+      userId: user.id,
       exercises: {
         create: {
           exerciseName: formData.exerciseName,
-          category: 'CORE', // Defaulting for now, could be dynamic
+          category: 'CORE',
           sets: formData.sets,
           reps: formData.reps,
           weight: formData.weight,
@@ -37,15 +44,22 @@ export async function logNutrition(formData: {
   fats: number;
   calories: number;
 }) {
-  const { userId } = await auth()
-  if (!userId) throw new Error('Unauthorized')
+  const user = await currentUser()
+  if (!user) throw new Error('Unauthorized')
+
+  // Self-healing: Ensure user exists in DB
+  await db.user.upsert({
+    where: { id: user.id },
+    update: { email: user.emailAddresses[0].emailAddress },
+    create: { id: user.id, email: user.emailAddresses[0].emailAddress }
+  })
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
   await db.nutritionLog.create({
     data: {
-      userId,
+      userId: user.id,
       date: today,
       protein: formData.protein,
       carbs: formData.carbs,
@@ -58,10 +72,18 @@ export async function logNutrition(formData: {
 }
 
 export async function getDashboardData() {
-  const { userId } = await auth()
-  if (!userId) return null
+  const userRecord = await currentUser()
+  if (!userRecord) return null
+  const userId = userRecord.id
 
-  const [workouts, nutrition, user] = await Promise.all([
+  // Self-healing: Ensure user exists in DB
+  const user = await db.user.upsert({
+    where: { id: userId },
+    update: { email: userRecord.emailAddresses[0].emailAddress },
+    create: { id: userId, email: userRecord.emailAddresses[0].emailAddress }
+  })
+
+  const [workouts, nutrition] = await Promise.all([
     db.workoutSession.findMany({
       where: { userId },
       include: { exercises: true },
@@ -73,9 +95,6 @@ export async function getDashboardData() {
         userId,
         date: { gte: new Date(new Date().setHours(0,0,0,0)) }
       }
-    }),
-    db.user.findUnique({
-      where: { id: userId }
     })
   ])
 
@@ -104,7 +123,7 @@ export async function getDashboardData() {
     },
     activity: workouts.map(w => ({
       id: w.id,
-      user: user?.email.split('@')[0] || 'Unknown',
+      user: user?.email?.split('@')[0] || 'Operative',
       action: `completed ${w.exercises[0]?.exerciseName || 'Workout'}`,
       time: w.date.toISOString(),
       kudos: 0
@@ -128,11 +147,11 @@ export async function getLeaderboardData() {
     
     return {
       rank: 0, // Will calculate below
-      user: user.email.split('@')[0],
+      user: user.email?.split('@')[0] || 'Unknown',
       powerLevel: totalVolume.toLocaleString(),
       rawVolume: totalVolume,
       change: 'static' as const,
-      avatar: user.email.substring(0, 2).toUpperCase(),
+      avatar: (user.email || 'OP').substring(0, 2).toUpperCase(),
       id: user.id
     }
   })
