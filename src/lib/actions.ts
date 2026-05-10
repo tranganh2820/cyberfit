@@ -260,7 +260,15 @@ export async function updateRole(role: 'BASIC' | 'ELITE' | 'OVERRIDE') {
 }
 
 export async function getExercises() {
+  const userRecord = await currentUser()
+  if (!userRecord) return []
+
   const exercises = await db.exerciseSet.findMany({
+    where: {
+      session: {
+        userId: userRecord.id
+      }
+    },
     distinct: ['exerciseName'],
     select: {
       exerciseName: true,
