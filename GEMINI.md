@@ -48,3 +48,10 @@
 - Simplicity First: Make every change as simple as possible. Impact minimal code.
 - No Laziness: Find root causes. No temporary fixes. Senior developer standards.
 - Minimal Impact: Only touch what's necessary. No side effects with new bugs.
+
+## Deployment Integrity
+1. **Root-Level Execution:** Always run Vercel commands from the repository root.
+2. **Pre-flight Build:** Run `npm run build` locally before pushing to GitHub. If the local build fails, DO NOT push.
+3. **Prisma Sync:** Ensure `prisma generate` is part of the `vercel-build` script to prevent 'Module Not Found' errors on Vercel.
+4. **Secret Verification:** Before a feature push, verify that required `process.env` keys (e.g., CLERK, DATABASE) exist in the Vercel project environment.
+5. **Zero-Warning Tolerance:** Fix all TypeScript and Lint errors locally before deploying.
