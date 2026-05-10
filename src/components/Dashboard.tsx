@@ -3,7 +3,7 @@
 import { Zap, Heart, Flame, Terminal, Plus, ThumbsUp } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { logWorkout } from '@/lib/actions'
 
 function cn(...inputs: ClassValue[]) {
@@ -144,6 +144,12 @@ export function QuickLog() {
 }
 
 export function SocialFeed({ items }: { items: any[] }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <div className="border border-white/10 bg-black/40 p-6 glassmorphism h-full">
       <h2 className="font-orbitron text-sm uppercase tracking-widest text-white mb-6">Cyber_Activity</h2>
@@ -152,7 +158,9 @@ export function SocialFeed({ items }: { items: any[] }) {
           <div key={item.id} className="border-l border-white/10 pl-4 py-2 hover:bg-white/5 transition-colors group">
             <div className="flex justify-between items-start mb-1">
               <span className="text-cyber-cyan font-bold text-xs uppercase">{item.user}</span>
-              <span className="text-[10px] font-jetbrains text-gray-600">{item.time}</span>
+              <span className="text-[10px] font-jetbrains text-gray-600">
+                {mounted ? new Date(item.time).toLocaleTimeString() : 'SYNCING...'}
+              </span>
             </div>
             <p className="text-gray-400 text-xs mb-3 italic">{item.action}</p>
             <button className="flex items-center gap-2 text-[10px] font-jetbrains text-cyber-purple/70 hover:text-cyber-purple transition-colors">

@@ -106,7 +106,7 @@ export async function getDashboardData() {
       id: w.id,
       user: user?.email.split('@')[0] || 'Unknown',
       action: `completed ${w.exercises[0]?.exerciseName || 'Workout'}`,
-      time: new Date(w.date).toLocaleTimeString(),
+      time: w.date.toISOString(),
       kudos: 0
     }))
   }
