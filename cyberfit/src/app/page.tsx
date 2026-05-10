@@ -1,12 +1,16 @@
 import { MetricCard, QuickLog, SocialFeed } from '@/components/Dashboard'
-import { dashboardMetrics, activityFeed, macroStats } from '@/data/mockData'
+import { getDashboardData } from '@/lib/actions'
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const data = await getDashboardData()
+
+  if (!data) return null
+
   return (
     <main className="p-8 space-y-8 animate-in fade-in duration-700">
       {/* Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {dashboardMetrics.map((metric) => (
+        {data.metrics.map((metric) => (
           <MetricCard 
             key={metric.label}
             {...metric} 
@@ -24,7 +28,7 @@ export default function Dashboard() {
 
         {/* Social Feed */}
         <div className="lg:col-span-1">
-          <SocialFeed items={activityFeed} />
+          <SocialFeed items={data.activity} />
         </div>
 
         {/* Nutrition Summary */}
@@ -32,7 +36,7 @@ export default function Dashboard() {
           <div className="border border-white/10 bg-black/40 p-6 glassmorphism h-full">
             <h2 className="font-orbitron text-sm uppercase tracking-widest text-white mb-6">Biometric_Fuel</h2>
             <div className="space-y-6">
-              {Object.entries(macroStats).map(([key, stat]) => (
+              {Object.entries(data.macros).map(([key, stat]) => (
                 <div key={key}>
                   <div className="flex justify-between text-[10px] font-jetbrains uppercase mb-2">
                     <span className="text-gray-500">{key}</span>
@@ -42,7 +46,7 @@ export default function Dashboard() {
                     <div 
                       className="absolute inset-y-0 left-0 transition-all duration-1000"
                       style={{ 
-                        width: `${(stat.current / stat.target) * 100}%`,
+                        width: `${Math.min((stat.current / stat.target) * 100, 100)}%`,
                         backgroundColor: stat.color,
                         boxShadow: `0 0 10px ${stat.color}`
                       }}

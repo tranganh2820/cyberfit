@@ -1,6 +1,10 @@
+'use client'
+
 import { Zap, Heart, Flame, Terminal, Plus, ThumbsUp } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useState } from 'react'
+import { logWorkout } from '@/lib/actions'
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -50,6 +54,26 @@ export function MetricCard({ label, value, unit, trend, color }: MetricCardProps
 }
 
 export function QuickLog() {
+  const [exercise, setExercise] = useState('')
+  const [sets, setSets] = useState(0)
+  const [reps, setReps] = useState(0)
+  const [weight, setWeight] = useState(0)
+  const [isPending, setIsPending] = useState(false)
+
+  const handleSubmit = async () => {
+    if (!exercise || sets <= 0) return
+    setIsPending(true)
+    try {
+      await logWorkout({ exerciseName: exercise, sets, reps, weight })
+      setExercise('')
+      setSets(0)
+      setReps(0)
+      setWeight(0)
+    } finally {
+      setIsPending(false)
+    }
+  }
+
   return (
     <div className="border border-white/10 bg-black/40 p-6 glassmorphism h-full">
       <div className="flex items-center gap-2 mb-6">
@@ -64,6 +88,8 @@ export function QuickLog() {
           </label>
           <input 
             type="text" 
+            value={exercise}
+            onChange={(e) => setExercise(e.target.value)}
             placeholder="Search Database..."
             className="w-full bg-transparent border-b border-white/20 py-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan transition-colors"
           />
@@ -72,21 +98,42 @@ export function QuickLog() {
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">SETS</label>
-            <input type="number" className="w-full bg-transparent border border-white/10 p-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
+            <input 
+              type="number" 
+              value={sets}
+              onChange={(e) => setSets(Number(e.target.value))}
+              className="w-full bg-transparent border border-white/10 p-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" 
+            />
           </div>
           <div>
             <label className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">REPS</label>
-            <input type="number" className="w-full bg-transparent border border-white/10 p-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
+            <input 
+              type="number" 
+              value={reps}
+              onChange={(e) => setReps(Number(e.target.value))}
+              className="w-full bg-transparent border border-white/10 p-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" 
+            />
           </div>
           <div>
             <label className="block font-jetbrains text-[10px] text-gray-500 uppercase mb-2">LOAD (KG)</label>
-            <input type="number" className="w-full bg-transparent border border-white/10 p-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
+            <input 
+              type="number" 
+              value={weight}
+              onChange={(e) => setWeight(Number(e.target.value))}
+              className="w-full bg-transparent border border-white/10 p-2 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" 
+            />
           </div>
         </div>
 
-        <button className="w-full border border-cyber-cyan/50 hover:bg-cyber-cyan hover:text-black transition-all duration-300 py-3 flex items-center justify-center gap-2 group">
-          <Plus size={16} className="group-hover:rotate-90 transition-transform" />
-          <span className="font-jetbrains text-xs font-bold uppercase tracking-widest">Commit_Sequence</span>
+        <button 
+          onClick={handleSubmit}
+          disabled={isPending}
+          className="w-full border border-cyber-cyan/50 hover:bg-cyber-cyan hover:text-black transition-all duration-300 py-3 flex items-center justify-center gap-2 group disabled:opacity-50"
+        >
+          <Plus size={16} className={cn("transition-transform", isPending ? "animate-spin" : "group-hover:rotate-90")} />
+          <span className="font-jetbrains text-xs font-bold uppercase tracking-widest">
+            {isPending ? 'COMMITTING...' : 'Commit_Sequence'}
+          </span>
         </button>
       </div>
     </div>
