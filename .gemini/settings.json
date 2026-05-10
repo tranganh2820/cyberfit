@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "vercel": {
+      "command": "",
+      "args": [
+        "https://mcp.vercel.com"
+      ]
+    }
+  }
+}
