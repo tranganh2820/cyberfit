@@ -52,7 +52,7 @@ export function SideNavBar() {
           <span className="font-jetbrains text-xs uppercase tracking-widest">Settings</span>
         </button>
         {isSignedIn && (
-          <SignOutButton>
+          <SignOutButton redirectUrl="/sign-in">
             <button className="w-full flex items-center gap-3 px-4 py-3 text-red-500/70 hover:text-red-400 transition-colors">
               <LogOut size={18} />
               <span className="font-jetbrains text-xs uppercase tracking-widest">Disconnect</span>
