@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,31 +6,25 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  BASIC
-  ELITE
-  OVERRIDE
-}
-
 model User {
-  id            String           @id // This will be the Clerk User ID
+  id            String           @id
   email         String           @unique
   role          Role             @default(BASIC)
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
-  workouts      WorkoutSession[]
   nutritionLogs NutritionLog[]
+  workouts      WorkoutSession[]
 }
 
 model WorkoutSession {
   id           String        @id @default(cuid())
   userId       String
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   date         DateTime      @default(now())
-  totalVolume  Float?        // Sum of all weight * reps
-  fatigueLevel Int?          // 1-10 scale
+  totalVolume  Float?
+  fatigueLevel Int?
   notes        String?
   exercises    ExerciseSet[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -41,13 +32,13 @@ model WorkoutSession {
 model ExerciseSet {
   id           String         @id @default(cuid())
   sessionId    String
-  session      WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   exerciseName String
-  category     String         // CORE, UPPER, LOWER, TACTICAL
+  category     String
   sets         Int
   reps         Int
-  weight       Float          // In KG
+  weight       Float
   order        Int            @default(0)
+  session      WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId])
 }
@@ -55,12 +46,18 @@ model ExerciseSet {
 model NutritionLog {
   id            String   @id @default(cuid())
   userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   date          DateTime @default(now())
   protein       Float    @default(0)
   carbs         Float    @default(0)
   fats          Float    @default(0)
   totalCalories Float    @default(0)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, date])
+}
+
+enum Role {
+  BASIC
+  ELITE
+  OVERRIDE
 }
