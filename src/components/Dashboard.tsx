@@ -43,7 +43,7 @@ export function MetricCard({ label, value, unit, trend, color }: MetricCardProps
         <span className="font-jetbrains text-[10px] opacity-70 tracking-widest uppercase">{trend}</span>
       </div>
       <div>
-        <h3 className="text-gray-400 font-jetbrains text-[10px] uppercase tracking-[0.2em] mb-1">{label}</h3>
+        <h3 className="text-gray-300 font-jetbrains text-[10px] uppercase tracking-[0.2em] mb-1">{label}</h3>
         <div className="flex items-baseline gap-2">
           <span className="text-4xl font-bold font-orbitron text-white">{value}</span>
           <span className="text-xs font-jetbrains opacity-50 uppercase">{unit}</span>
@@ -91,7 +91,7 @@ export function QuickLog() {
       
       <div className="space-y-6">
         <div className="group">
-          <label className="block font-jetbrains text-[10px] text-gray-400 uppercase mb-2 group-focus-within:text-cyber-cyan transition-colors">
+          <label className="block font-jetbrains text-[10px] text-gray-300 uppercase mb-2 group-focus-within:text-cyber-cyan transition-colors">
             _EXECUTE_EXERCISE
           </label>
           <input 
@@ -105,7 +105,7 @@ export function QuickLog() {
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label htmlFor="sets" className="block font-jetbrains text-[10px] text-gray-400 uppercase mb-2">SETS</label>
+            <label htmlFor="sets" className="block font-jetbrains text-[10px] text-gray-300 uppercase mb-2">SETS</label>
             <input 
               id="sets"
               type="number" 
@@ -115,7 +115,7 @@ export function QuickLog() {
             />
           </div>
           <div>
-            <label htmlFor="reps" className="block font-jetbrains text-[10px] text-gray-400 uppercase mb-2">REPS</label>
+            <label htmlFor="reps" className="block font-jetbrains text-[10px] text-gray-300 uppercase mb-2">REPS</label>
             <input 
               id="reps"
               type="number" 
@@ -125,7 +125,7 @@ export function QuickLog() {
             />
           </div>
           <div>
-            <label htmlFor="weight" className="block font-jetbrains text-[10px] text-gray-400 uppercase mb-2">LOAD (KG)</label>
+            <label htmlFor="weight" className="block font-jetbrains text-[10px] text-gray-300 uppercase mb-2">LOAD (KG)</label>
             <input 
               id="weight"
               type="number" 
@@ -166,11 +166,11 @@ export function SocialFeed({ items }: { items: any[] }) {
           <div key={item.id} className="border-l border-white/10 pl-4 py-2 hover:bg-white/5 transition-colors group">
             <div className="flex justify-between items-start mb-1">
               <span className="text-cyber-cyan font-bold text-xs uppercase">{item.user}</span>
-              <span className="text-[10px] font-jetbrains text-gray-400">
+              <span className="text-[10px] font-jetbrains text-gray-300">
                 {mounted ? new Date(item.time).toLocaleTimeString() : 'SYNCING...'}
               </span>
             </div>
-            <p className="text-gray-400 text-xs mb-3 italic">{item.action}</p>
+            <p className="text-gray-300 text-xs mb-3 italic">{item.action}</p>
             <button className="flex items-center gap-2 text-[10px] font-jetbrains text-cyber-purple/70 hover:text-cyber-purple transition-colors">
               <ThumbsUp size={12} />
               KUDOS: {item.kudos}

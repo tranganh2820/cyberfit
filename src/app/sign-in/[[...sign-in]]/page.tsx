@@ -15,13 +15,13 @@ export default function Page() {
           <h1 className="text-4xl font-bold font-orbitron tracking-tighter text-white uppercase">
             CyberFit // <span className="text-cyber-cyan">Auth_Link</span>
           </h1>
-          <p className="font-jetbrains text-[10px] text-gray-400 uppercase tracking-[0.4em]">Establishing_Neural_Connection</p>
+          <p className="font-jetbrains text-[10px] text-gray-300 uppercase tracking-[0.4em]">Establishing_Neural_Connection</p>
         </div>
 
         <SignIn />
       </div>
 
-      <div className="mt-12 text-gray-400 font-jetbrains text-[8px] tracking-[0.3em] uppercase z-10">
+      <div className="mt-12 text-gray-300 font-jetbrains text-[8px] tracking-[0.3em] uppercase z-10">
         System_Gateway: [STABLE] // Encryption: [AES-256]
       </div>
     </div>

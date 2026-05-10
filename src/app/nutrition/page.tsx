@@ -31,7 +31,7 @@ export default async function NutritionPage() {
         <div className="lg:col-span-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-orbitron text-sm text-white tracking-widest uppercase">Daily_Fuel_Log</h2>
-            <span className="text-[10px] font-jetbrains text-gray-400 uppercase">Status: Active_Cycle</span>
+            <span className="text-[10px] font-jetbrains text-gray-300 uppercase">Status: Active_Cycle</span>
           </div>
           <MacroLog items={logs || []} />
         </div>
