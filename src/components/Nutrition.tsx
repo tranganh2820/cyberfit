@@ -1,6 +1,9 @@
+'use client'
+
 import { Search, Apple, Droplets, Trash2, Zap } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useState, useEffect } from 'react'
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -44,12 +47,12 @@ export function FuelHero({ protein, carbs, fats, total }: { protein: number, car
   )
 }
 
-export function MacroLog() {
-  const items = [
-    { name: 'Fuel_Shake_01', time: '08:00', p: 45, c: 10, f: 5, kcal: 320 },
-    { name: 'Synthetic_Chicken', time: '12:30', p: 60, c: 50, f: 12, kcal: 680 },
-    { name: 'Power_Bar_Alpha', time: '15:45', p: 20, c: 30, f: 8, kcal: 420 },
-  ]
+export function MacroLog({ items }: { items: any[] }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <div className="border border-white/10 bg-black/40 glassmorphism overflow-hidden">
@@ -68,17 +71,26 @@ export function MacroLog() {
         <tbody className="text-sm">
           {items.map((item, i) => (
             <tr key={i} className="hover:bg-white/5 transition-colors border-b border-white/5">
-              <td className="p-4 text-gray-500 text-xs">{item.time}</td>
-              <td className="p-4 text-white uppercase tracking-tighter">{item.name}</td>
-              <td className="p-4 text-center text-cyber-purple font-bold">{item.p}</td>
-              <td className="p-4 text-center text-cyber-cyan font-bold">{item.c}</td>
-              <td className="p-4 text-center text-cyber-lime font-bold">{item.f}</td>
-              <td className="p-4 text-right font-bold">{item.kcal}</td>
+              <td className="p-4 text-gray-500 text-xs">
+                {mounted ? new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '...'}
+              </td>
+              <td className="p-4 text-white uppercase tracking-tighter">Energy_Log_{i+1}</td>
+              <td className="p-4 text-center text-cyber-purple font-bold">{item.protein}</td>
+              <td className="p-4 text-center text-cyber-cyan font-bold">{item.carbs}</td>
+              <td className="p-4 text-center text-cyber-lime font-bold">{item.fats}</td>
+              <td className="p-4 text-right font-bold">{item.totalCalories}</td>
               <td className="p-4 text-right text-gray-600 hover:text-red-500 cursor-pointer">
                 <Trash2 size={14} className="ml-auto" />
               </td>
             </tr>
           ))}
+          {items.length === 0 && (
+            <tr>
+              <td colSpan={7} className="p-8 text-center text-gray-600 text-xs uppercase tracking-widest italic">
+                _NO_ENERGY_LOGS_FOUND_IN_CACHE
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

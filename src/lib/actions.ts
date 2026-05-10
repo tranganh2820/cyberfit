@@ -162,8 +162,16 @@ export async function getLeaderboardData() {
 }
 
 export async function getNutritionData() {
-  const { userId } = await auth()
-  if (!userId) return null
+  const userRecord = await currentUser()
+  if (!userRecord) return null
+  const userId = userRecord.id
+
+  // Self-healing: Ensure user exists in DB
+  await db.user.upsert({
+    where: { id: userId },
+    update: { email: userRecord.emailAddresses[0].emailAddress },
+    create: { id: userId, email: userRecord.emailAddresses[0].emailAddress }
+  })
 
   const logs = await db.nutritionLog.findMany({
     where: { userId },
@@ -172,4 +180,20 @@ export async function getNutritionData() {
   })
 
   return logs
+}
+
+export async function getExercises() {
+  const exercises = await db.exerciseSet.findMany({
+    distinct: ['exerciseName'],
+    select: {
+      exerciseName: true,
+      category: true
+    }
+  })
+
+  return exercises.map(e => ({
+    id: e.exerciseName,
+    name: e.exerciseName,
+    category: e.category
+  }))
 }

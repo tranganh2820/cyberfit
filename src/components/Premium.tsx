@@ -1,3 +1,5 @@
+'use client'
+
 import { ShieldCheck, Zap, Globe, Cpu, CreditCard, CheckCircle2 } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'

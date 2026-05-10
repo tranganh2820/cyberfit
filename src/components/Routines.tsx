@@ -1,3 +1,5 @@
+'use client'
+
 import { Search, Database, BarChart3, ChevronRight, Play, Trash2 } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'

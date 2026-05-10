@@ -1,3 +1,5 @@
+'use client'
+
 import { Trophy, ChevronUp, ChevronDown, User, Target } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
