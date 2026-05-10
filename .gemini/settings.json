@@ -1,10 +1,8 @@
 {
   "mcpServers": {
     "vercel": {
-      "command": "",
-      "args": [
-        "https://mcp.vercel.com"
-      ]
+      "type": "http",
+      "url": "https://mcp.vercel.com"
     }
   }
 }
