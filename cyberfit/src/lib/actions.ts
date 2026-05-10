@@ -108,6 +108,45 @@ export async function getDashboardData() {
       action: `completed ${w.exercises[0]?.exerciseName || 'Workout'}`,
       time: new Date(w.date).toLocaleTimeString(),
       kudos: 0
-    }))
-  }
+export async function getLeaderboardData() {
+  const users = await db.user.findMany({
+    include: {
+      workouts: {
+        include: { exercises: true }
+      }
+    }
+  })
+
+  const leaderboard = users.map(user => {
+    const totalVolume = user.workouts.reduce((acc, session) => 
+      acc + session.exercises.reduce((sAcc, ex) => sAcc + (ex.weight * ex.reps * ex.sets), 0), 0
+    )
+    
+    return {
+      rank: 0, // Will calculate below
+      user: user.email.split('@')[0],
+      powerLevel: totalVolume.toLocaleString(),
+      rawVolume: totalVolume,
+      change: 'static' as const,
+      avatar: user.email.substring(0, 2).toUpperCase(),
+      id: user.id
+    }
+  })
+
+  return leaderboard
+    .sort((a, b) => b.rawVolume - a.rawVolume)
+    .map((entry, index) => ({ ...entry, rank: index + 1 }))
+}
+
+export async function getNutritionData() {
+  const { userId } = await auth()
+  if (!userId) return null
+
+  const logs = await db.nutritionLog.findMany({
+    where: { userId },
+    orderBy: { date: 'desc' },
+    take: 30
+  })
+
+  return logs
 }
