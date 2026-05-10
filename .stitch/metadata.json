@@ -1,0 +1,64 @@
+{
+  "name": "projects/1540943495340383425",
+  "projectId": "1540943495340383425",
+  "title": "CyberFit",
+  "visibility": "PRIVATE",
+  "createTime": "2026-05-09T15:12:54.679587Z",
+  "updateTime": "2026-05-09T15:23:17.483700Z",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designTheme": {
+    "colorMode": "DARK",
+    "font": "SPACE_GROTESK",
+    "customColor": "#00f5ff",
+    "headlineFont": "SPACE_GROTESK",
+    "bodyFont": "HANKEN_GROTESK",
+    "labelFont": "JETBRAINS_MONO"
+  },
+  "screens": {
+    "index": {
+      "id": "12911c6a4fde4331841c170b06d57aef",
+      "sourceScreen": "projects/1540943495340383425/screens/12911c6a4fde4331841c170b06d57aef",
+      "x": 1024,
+      "y": 0,
+      "width": 1280,
+      "height": 1024
+    },
+    "leaderboards": {
+      "id": "efd383a88f6948cc9f545cc5d53c6952",
+      "sourceScreen": "projects/1540943495340383425/screens/efd383a88f6948cc9f545cc5d53c6952",
+      "x": 2304,
+      "y": 0,
+      "width": 1280,
+      "height": 1024
+    },
+    "routines": {
+      "id": "b190aa4a1e794798a1c0bca1a90e8fb9",
+      "sourceScreen": "projects/1540943495340383425/screens/b190aa4a1e794798a1c0bca1a90e8fb9",
+      "x": 3584,
+      "y": 0,
+      "width": 1280,
+      "height": 1024
+    },
+    "nutrition": {
+      "id": "fc478f5edeb94af18b8a6e1ca600bb55",
+      "sourceScreen": "projects/1540943495340383425/screens/fc478f5edeb94af18b8a6e1ca600bb55",
+      "x": 4864,
+      "y": 0,
+      "width": 1280,
+      "height": 1024
+    },
+    "premium": {
+      "id": "206cc8b462da46f78349666c517220dd",
+      "sourceScreen": "projects/1540943495340383425/screens/206cc8b462da46f78349666c517220dd",
+      "x": 6144,
+      "y": 0,
+      "width": 1280,
+      "height": 1024
+    }
+  },
+  "metadata": {
+    "userRole": "OWNER"
+  }
+}
