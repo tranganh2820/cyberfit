@@ -18,14 +18,9 @@ export default async function RoutinesPage() {
           <ExerciseDatabase items={displayExercises} />
         </div>
 
-        {/* Main Sequence Designer */}
-        <div className="lg:col-span-6 h-full overflow-y-auto pr-2 custom-scrollbar">
+        {/* Main Sequence Designer & Predictor */}
+        <div className="lg:col-span-9 h-full overflow-hidden">
           <SequenceDesigner savedRoutines={savedRoutines} />
-        </div>
-
-        {/* Volume Predictor Sidebar */}
-        <div className="lg:col-span-3 h-full overflow-hidden">
-          <VolumePredictor />
         </div>
       </div>
     </main>
