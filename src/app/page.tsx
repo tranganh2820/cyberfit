@@ -36,7 +36,7 @@ export default async function Dashboard() {
               {Object.entries(data.macros).map(([key, stat]) => (
                 <div key={key}>
                   <div className="flex justify-between text-[10px] font-jetbrains uppercase mb-2">
-                    <span className="text-gray-500">{key}</span>
+                    <span className="text-gray-400">{key}</span>
                     <span className="text-white">{stat.current} / {stat.target}g</span>
                   </div>
                   <div className="h-1 bg-white/5 relative overflow-hidden">

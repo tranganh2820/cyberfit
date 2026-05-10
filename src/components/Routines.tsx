@@ -20,7 +20,7 @@ export function ExerciseDatabase({ items }: { items: any[] }) {
           <h2 className="font-orbitron text-[10px] uppercase tracking-[0.2em] text-white">Exercise_Database</h2>
         </div>
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input 
             type="text" 
             placeholder="FILTER_BY_TAG..."
@@ -32,7 +32,7 @@ export function ExerciseDatabase({ items }: { items: any[] }) {
       <div className="flex-1 overflow-y-auto p-2 space-y-1">
         {['CORE', 'UPPER', 'LOWER', 'TACTICAL'].map((cat) => (
           <div key={cat} className="mb-4">
-            <div className="text-[9px] font-jetbrains text-gray-600 px-3 mb-2 tracking-[0.3em]">[{cat}]</div>
+            <div className="text-[9px] font-jetbrains text-gray-400 px-3 mb-2 tracking-[0.3em]">[{cat}]</div>
             {items.filter(i => i.category === cat).map((item) => (
               <button 
                 key={item.id}
@@ -41,7 +41,7 @@ export function ExerciseDatabase({ items }: { items: any[] }) {
                 <span className="font-jetbrains text-[11px] text-gray-300 group-hover:text-white uppercase tracking-tighter">
                   {item.name}
                 </span>
-                <ChevronRight size={14} className="text-gray-700 group-hover:text-cyber-cyan transition-colors" />
+                <ChevronRight size={14} className="text-gray-400 group-hover:text-cyber-cyan transition-colors" />
               </button>
             ))}
           </div>
@@ -107,7 +107,7 @@ export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
               onClick={() => handleStartRoutine(r)}
               className="border border-white/10 bg-white/5 p-4 text-left hover:border-cyber-cyan transition-colors group"
             >
-              <div className="text-[10px] font-jetbrains text-gray-500 mb-1">SAVED_PROTOCOL</div>
+              <div className="text-[10px] font-jetbrains text-gray-400 mb-1">SAVED_PROTOCOL</div>
               <div className="font-orbitron text-sm text-white">{r.name}</div>
               <div className="text-[9px] font-jetbrains text-cyber-cyan mt-2 uppercase">{r.exercises.length} MODULES</div>
             </button>
@@ -146,7 +146,7 @@ export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
               />
               <button 
                 onClick={() => setActiveSequence(activeSequence.filter((_, idx) => idx !== i))}
-                className="text-gray-600 hover:text-red-500 transition-colors"
+                className="text-gray-400 hover:text-red-500 transition-colors"
               >
                 <Trash2 size={16} />
               </button>
@@ -154,7 +154,7 @@ export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
 
             <div className="grid grid-cols-3 gap-6 ml-4">
               <div>
-                <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_SETS</label>
+                <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-2 italic">_SETS</label>
                 <input 
                   type="number" 
                   value={step.sets} 
@@ -163,7 +163,7 @@ export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
                 />
               </div>
               <div>
-                <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_REPS</label>
+                <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-2 italic">_REPS</label>
                 <input 
                   type="number" 
                   value={step.reps} 
@@ -172,7 +172,7 @@ export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
                 />
               </div>
               <div>
-                <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-2 italic">_LOAD_KG</label>
+                <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-2 italic">_LOAD_KG</label>
                 <input 
                   type="number" 
                   value={step.weight} 
@@ -186,7 +186,7 @@ export function SequenceDesigner({ savedRoutines }: { savedRoutines: any[] }) {
 
         <button 
           onClick={handleAddModule}
-          className="w-full border-2 border-dashed border-white/5 py-8 text-gray-600 font-jetbrains text-[10px] tracking-[0.4em] uppercase hover:border-cyber-cyan/30 hover:text-cyber-cyan transition-all"
+          className="w-full border-2 border-dashed border-white/5 py-8 text-gray-400 font-jetbrains text-[10px] tracking-[0.4em] uppercase hover:border-cyber-cyan/30 hover:text-cyber-cyan transition-all"
         >
           + DROP_NEW_EXERCISE_MODULE
         </button>
@@ -206,7 +206,7 @@ export function VolumePredictor() {
       <div className="space-y-8">
         <div>
           <div className="flex justify-between text-[10px] font-jetbrains uppercase mb-2">
-            <span className="text-gray-500">Total_Load_Volume</span>
+            <span className="text-gray-400">Total_Load_Volume</span>
             <span className="text-cyber-cyan">8,420 kg</span>
           </div>
           <div className="h-1 bg-white/5 relative">
@@ -216,7 +216,7 @@ export function VolumePredictor() {
 
         <div>
           <div className="flex justify-between text-[10px] font-jetbrains uppercase mb-2">
-            <span className="text-gray-500">Fatigue_Projection</span>
+            <span className="text-gray-400">Fatigue_Projection</span>
             <span className="text-cyber-purple">Medium</span>
           </div>
           <div className="h-24 flex items-end gap-1 mt-4">
@@ -232,11 +232,11 @@ export function VolumePredictor() {
 
         <div className="pt-8 border-t border-white/5 space-y-4">
           <div className="flex justify-between items-center text-[10px] font-jetbrains">
-            <span className="text-gray-500">PRIMARY_STIMULUS:</span>
+            <span className="text-gray-400">PRIMARY_STIMULUS:</span>
             <span className="text-cyber-lime uppercase">Hypertrophy</span>
           </div>
           <div className="flex justify-between items-center text-[10px] font-jetbrains">
-            <span className="text-gray-500">EST_DURATION:</span>
+            <span className="text-gray-400">EST_DURATION:</span>
             <span className="text-white">52:00 MIN</span>
           </div>
         </div>

@@ -52,14 +52,14 @@ export function TierHub() {
             <h3 className="font-orbitron text-xl text-white tracking-tighter mb-1">{tier.name}</h3>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-bold font-jetbrains text-white">{tier.price}</span>
-              <span className="text-[10px] font-jetbrains text-gray-500">/MONTH</span>
+              <span className="text-[10px] font-jetbrains text-gray-400">/MONTH</span>
             </div>
           </div>
 
           <ul className="space-y-4 flex-1">
             {tier.features.map((feat) => (
               <li key={feat} className="flex items-start gap-3">
-                <CheckCircle2 size={14} className={tier.premium ? "text-cyber-cyan" : "text-gray-600"} />
+                <CheckCircle2 size={14} className={tier.premium ? "text-cyber-cyan" : "text-gray-400"} />
                 <span className="text-xs font-jetbrains text-gray-300 uppercase tracking-tighter">{feat}</span>
               </li>
             ))}
@@ -98,22 +98,22 @@ export function PaymentTerminal() {
 
       <div className="max-w-md mx-auto space-y-8">
         <div className="group">
-          <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-3">_CARD_HOLDER_ID</label>
+          <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-3">_CARD_HOLDER_ID</label>
           <input type="text" placeholder="OPERATIVE NAME" className="w-full bg-white/5 border-b border-white/20 py-2 px-4 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
         </div>
 
         <div className="group">
-          <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-3">_CARD_NUMBER_SEQUENCE</label>
+          <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-3">_CARD_NUMBER_SEQUENCE</label>
           <input type="text" placeholder="**** **** **** ****" className="w-full bg-white/5 border-b border-white/20 py-2 px-4 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
         </div>
 
         <div className="grid grid-cols-2 gap-8">
           <div>
-            <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-3">_EXP_DATE</label>
+            <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-3">_EXP_DATE</label>
             <input type="text" placeholder="MM / YY" className="w-full bg-white/5 border-b border-white/20 py-2 px-4 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
           </div>
           <div>
-            <label className="block font-jetbrains text-[9px] text-gray-500 uppercase mb-3">_SEC_PROTOCOL</label>
+            <label className="block font-jetbrains text-[9px] text-gray-400 uppercase mb-3">_SEC_PROTOCOL</label>
             <input type="text" placeholder="CVC" className="w-full bg-white/5 border-b border-white/20 py-2 px-4 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan" />
           </div>
         </div>
@@ -122,7 +122,7 @@ export function PaymentTerminal() {
           <div className="h-10 w-10 border border-white/10 flex items-center justify-center">
             <Cpu size={20} className="text-cyber-cyan animate-pulse" />
           </div>
-          <p className="text-[10px] font-jetbrains text-gray-600 leading-relaxed uppercase">
+          <p className="text-[10px] font-jetbrains text-gray-400 leading-relaxed uppercase">
             ENCRYPTION_STATUS: AES-256_ACTIVE<br />
             PAYMENT_GATEWAY: STRIPE_SECURE_API
           </p>
@@ -154,7 +154,7 @@ export function PremiumHUD() {
       </div>
       
       <div className="mt-12 bg-white/5 p-4 border border-white/10">
-        <p className="font-jetbrains text-[9px] text-gray-500 leading-relaxed italic uppercase">
+        <p className="font-jetbrains text-[9px] text-gray-400 leading-relaxed italic uppercase">
           "The 'OVERRIDE' protocol grants full access to the CyberFit neural network and advanced biometric optimization tools."
         </p>
       </div>

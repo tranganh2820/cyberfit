@@ -15,7 +15,7 @@ export function FuelHero({ protein, carbs, fats, total }: { protein: number, car
     <div className="border border-white/10 bg-cyber-charcoal/20 p-8 glassmorphism relative overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center text-center">
         <div className="space-y-2">
-          <div className="text-[10px] font-jetbrains text-gray-500 tracking-widest uppercase">_TOTAL_ENERGY</div>
+          <div className="text-[10px] font-jetbrains text-gray-400 tracking-widest uppercase">_TOTAL_ENERGY</div>
           <div className="text-5xl font-bold font-orbitron text-white">{total}</div>
           <div className="text-[10px] font-jetbrains text-cyber-cyan uppercase">KCAL_INTAKE</div>
         </div>
@@ -59,7 +59,7 @@ export function MacroLog({ items }: { items: any[] }) {
     <div className="border border-white/10 bg-black/40 glassmorphism overflow-hidden">
       <table className="w-full text-left font-jetbrains">
         <thead className="bg-white/5">
-          <tr className="text-[10px] text-gray-500 uppercase tracking-widest border-b border-white/10">
+          <tr className="text-[10px] text-gray-400 uppercase tracking-widest border-b border-white/10">
             <th className="p-4">Time</th>
             <th className="p-4">Item</th>
             <th className="p-4 text-center">P</th>
@@ -72,7 +72,7 @@ export function MacroLog({ items }: { items: any[] }) {
         <tbody className="text-sm">
           {items.map((item, i) => (
             <tr key={i} className="hover:bg-white/5 transition-colors border-b border-white/5">
-              <td className="p-4 text-gray-500 text-xs">
+              <td className="p-4 text-gray-400 text-xs">
                 {mounted ? new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '...'}
               </td>
               <td className="p-4 text-white uppercase tracking-tighter">Energy_Log_{i+1}</td>
@@ -80,14 +80,14 @@ export function MacroLog({ items }: { items: any[] }) {
               <td className="p-4 text-center text-cyber-cyan font-bold">{item.carbs}</td>
               <td className="p-4 text-center text-cyber-lime font-bold">{item.fats}</td>
               <td className="p-4 text-right font-bold">{item.totalCalories}</td>
-              <td className="p-4 text-right text-gray-600 hover:text-red-500 cursor-pointer">
+              <td className="p-4 text-right text-gray-400 hover:text-red-500 cursor-pointer">
                 <Trash2 size={14} className="ml-auto" />
               </td>
             </tr>
           ))}
           {items.length === 0 && (
             <tr>
-              <td colSpan={7} className="p-8 text-center text-gray-600 text-xs uppercase tracking-widest italic">
+              <td colSpan={7} className="p-8 text-center text-gray-400 text-xs uppercase tracking-widest italic">
                 _NO_ENERGY_LOGS_FOUND_IN_CACHE
               </td>
             </tr>
@@ -129,7 +129,7 @@ export function FuelScanner() {
           placeholder="SEARCH_MACRO_DATABASE..."
           className="w-full bg-transparent border-b border-white/20 py-3 font-jetbrains text-sm focus:outline-none focus:border-cyber-cyan"
         />
-        <div className="absolute right-0 bottom-3 text-[10px] font-jetbrains text-gray-600">_CMD</div>
+        <div className="absolute right-0 bottom-3 text-[10px] font-jetbrains text-gray-400">_CMD</div>
       </div>
 
       <div className="space-y-4">
@@ -147,7 +147,7 @@ export function FuelScanner() {
               <div className="text-xs text-white font-bold uppercase">{res.name}</div>
               {isPending && <div className="animate-spin h-2 w-2 bg-cyber-cyan" />}
             </div>
-            <div className="flex gap-4 text-[10px] font-jetbrains text-gray-500 group-hover:text-cyber-cyan transition-colors">
+            <div className="flex gap-4 text-[10px] font-jetbrains text-gray-400 group-hover:text-cyber-cyan transition-colors">
               <span>P:{res.p}</span>
               <span>C:{res.c}</span>
               <span>F:{res.f}</span>
@@ -179,24 +179,24 @@ export function NutrientHUD() {
                 className="animate-pulse"
               />
            </svg>
-           <div className="absolute top-0 text-[8px] font-jetbrains text-gray-600 tracking-widest uppercase">Vit_A</div>
-           <div className="absolute right-0 text-[8px] font-jetbrains text-gray-600 tracking-widest uppercase">Vit_B12</div>
-           <div className="absolute bottom-0 text-[8px] font-jetbrains text-gray-600 tracking-widest uppercase">Zinc</div>
-           <div className="absolute left-0 text-[8px] font-jetbrains text-gray-600 tracking-widest uppercase">Magnesium</div>
+           <div className="absolute top-0 text-[8px] font-jetbrains text-gray-400 tracking-widest uppercase">Vit_A</div>
+           <div className="absolute right-0 text-[8px] font-jetbrains text-gray-400 tracking-widest uppercase">Vit_B12</div>
+           <div className="absolute bottom-0 text-[8px] font-jetbrains text-gray-400 tracking-widest uppercase">Zinc</div>
+           <div className="absolute left-0 text-[8px] font-jetbrains text-gray-400 tracking-widest uppercase">Magnesium</div>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between text-[10px] font-jetbrains">
             <div className="flex items-center gap-2">
               <Droplets size={14} className="text-cyber-cyan" />
-              <span className="text-gray-500 uppercase">Hydration_Level</span>
+              <span className="text-gray-400 uppercase">Hydration_Level</span>
             </div>
             <span className="text-cyber-cyan">85%</span>
           </div>
           <div className="h-2 bg-white/5 relative overflow-hidden">
              <div className="absolute inset-y-0 left-0 bg-cyber-cyan w-[85%] shadow-[0_0_15px_rgba(0,245,255,0.5)]" />
           </div>
-          <div className="text-[8px] font-jetbrains text-gray-700 uppercase tracking-[0.2em] text-right italic">
+          <div className="text-[8px] font-jetbrains text-gray-400 uppercase tracking-[0.2em] text-right italic">
             _TARGET: 4.5L // REMAINING: 0.8L
           </div>
         </div>

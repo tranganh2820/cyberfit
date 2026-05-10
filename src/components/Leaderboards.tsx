@@ -33,7 +33,7 @@ export function LeaderboardList({ items }: { items: any[] }) {
             key={tab}
             className={cn(
               "flex-1 py-4 font-orbitron text-xs tracking-widest transition-colors",
-              i === 0 ? "text-cyber-cyan border-b border-cyber-cyan bg-cyber-cyan/5" : "text-gray-500 hover:text-white"
+              i === 0 ? "text-cyber-cyan border-b border-cyber-cyan bg-cyber-cyan/5" : "text-gray-400 hover:text-white"
             )}
           >
             {tab}
@@ -43,7 +43,7 @@ export function LeaderboardList({ items }: { items: any[] }) {
       <div className="p-2">
         <table className="w-full text-left font-jetbrains">
           <thead>
-            <tr className="text-[10px] text-gray-500 uppercase tracking-widest border-b border-white/5">
+            <tr className="text-[10px] text-gray-400 uppercase tracking-widest border-b border-white/5">
               <th className="p-4">Rank</th>
               <th className="p-4">Operative</th>
               <th className="p-4">Power_Level</th>
@@ -101,7 +101,7 @@ export function BiometricHUD() {
         {stats.map((stat) => (
           <div key={stat.label}>
             <div className="flex justify-between text-[10px] font-jetbrains uppercase mb-3">
-              <span className="text-gray-500">{stat.label}</span>
+              <span className="text-gray-400">{stat.label}</span>
               <span className="text-white">VS #1 ELITE</span>
             </div>
             <div className="relative h-12 flex items-center gap-2">
@@ -129,7 +129,7 @@ export function BiometricHUD() {
       </div>
 
       <div className="mt-12 pt-8 border-t border-white/5">
-        <div className="text-[10px] font-jetbrains text-gray-500 uppercase mb-4 tracking-[0.2em]">Neural_Sync_Status</div>
+        <div className="text-[10px] font-jetbrains text-gray-400 uppercase mb-4 tracking-[0.2em]">Neural_Sync_Status</div>
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full border-2 border-cyber-lime border-t-transparent animate-spin" />
           <div className="font-jetbrains text-[9px] text-cyber-lime leading-relaxed uppercase">
